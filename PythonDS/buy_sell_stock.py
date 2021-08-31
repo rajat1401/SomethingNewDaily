@@ -5,11 +5,11 @@ def maxProfit(prices):
     maxprofit= 0
     minprice= float('inf')
     n= len(prices)
-    for i in range(n):
-        if(prices[i]< minprice):
-            minprice= prices[i]
-        if(prices[i] - minprice> maxprofit):
-            maxprofit= prices[i] - minprice    
+    for j in range(n):
+        if(prices[j]< minprice):
+            minprice= prices[j]
+        if(prices[j] - minprice> maxprofit):
+            maxprofit= prices[j] - minprice    
     return maxprofit
 
 arr= list(map(int, input().split()))
