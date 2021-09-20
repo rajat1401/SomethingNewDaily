@@ -16,3 +16,7 @@ class Solution:
                 if(flag): return flag
             cur+= 1
         return False
+
+s= 'babbabbab'
+a= Solution()
+print (a.repeatedSubstringPattern(s))
