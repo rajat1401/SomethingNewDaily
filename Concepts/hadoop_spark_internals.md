@@ -34,10 +34,10 @@ Basically a driver and cluster manager (yarn/mesos/standalone) that allocates re
 
 spark sql -> catalyst optimizer -> logocal plan -> physical plan -> DAG
 
-1. Spark RDD's <br>
+1. <font color="cyan">Spark RDD</font> <br>
 primary user facing API of Spark. immutable collection of elements distributed across nodes for parallelism to be operated on by low-level APIs. usually schemaless streams of text or something. can be converted to datasets/dataframes.
 
-2. Datasets or FataFramses ( <font color="orange">unified after Spark 2.0</font> ) <br>
+2. <font color="cyan">Datasets or FataFrames</font> (unified after Spark 2.0) <br>
 also immutable distruted collection of data but with a schema. unified to a single high-level API:- <br>
 
     - Dataset[Row] (untyped - DataFrames)
@@ -52,4 +52,27 @@ also immutable distruted collection of data but with a schema. unified to a sing
 val ds = spark.read.json(“/databricks-public-datasets/data/iot/iot_devices.json”).as[DeviceIoTData]
 ```
 works, given you have a case-class names ```DeviceIoTData```.
+
+3. <font color="cyan">Repartition</font> <br>
+```spark sql
+repartition= max(default_parallelism, ceil(ram/target))
+```
+
+default parellelism is:
+- > (num Executors)X(num ExecutorCores)X(2 or 3)
+- target(partition size) is usually 128MB 
+- can set ```spark.sql.shuffle.partitions``` based on data size, cores etc. can be se to 1.5 or 2X the initial value of partitions (df.rdd.getnumpartitions). Once any operation is applied to the df, partitions become 200 (default). 
+
+<br>
+<img src="/Users/rajat_mac/Documents/SomethingNewDaily/images/repartition.png">
+
+
+4. <font color="cyan">Spark sorting</font> <br>
+How does spark internally achieve sorting?
+- samples on the data to computer boundaries for each output partition. (```sample``` followed by ```collect```)
+- input rdd is partitioned using rangePartitioner (```repartitionByRange```)
+- each partition is sorted internally (```mapPartitions```)
+
+
+5. 
  
