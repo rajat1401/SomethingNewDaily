@@ -74,5 +74,84 @@ How does spark internally achieve sorting?
 - each partition is sorted internally (```mapPartitions```)
 
 
-5. 
- 
+5. <font color="cyan">Serializability in Spark</font> <br>
+When you run transformation on rdd (filter, map, flatMap etc.), the following happens:- <br>
+    - serlialized on driver node
+    - sent to workers
+    - deserialized
+
+Suppose we are trying to call a testing function in map as follows <br>
+
+```scala
+import org.apache.spark.{SparkContext,SparkConf}
+
+object Spark {
+  val ctx = new SparkContext(new SparkConf().setAppName("test").setMaster("local[*]"))
+}
+
+object NOTworking extends App {
+  new Test().doIT
+}
+
+class Test extends java.io.Serializable {
+  val rddList = Spark.ctx.parallelize(List(1,2,3))
+
+  def doIT() =  {
+    val after = rddList.map(someFunc)
+    after.collect().foreach(println)
+  }
+
+  def someFunc(a: Int) = a + 1
+}
+```
+Since methods can't be serialized on their own, spark tries to serialize the whole **testing** class. 
+
+> Solution 1:
+```scala
+import org.apache.spark.{SparkContext,SparkConf}
+
+object Spark {
+  val ctx = new SparkContext(new SparkConf().setAppName("test").setMaster("local[*]"))
+}
+
+object NOTworking extends App {
+  new Test().doIT
+}
+
+class Test extends java.io.Serializable {
+  val rddList = Spark.ctx.parallelize(List(1,2,3))
+
+  def doIT() =  {
+    val after = rddList.map(someFunc)
+    after.collect().foreach(println)
+  }
+
+  def someFunc(a: Int) = a + 1
+}
+```
+> Solution 2: 
+```scala
+import org.apache.spark.{SparkContext,SparkConf}
+
+object Spark {
+  val ctx = new SparkContext(new SparkConf().setAppName("test").setMaster("local[*]"))
+}
+
+object NOTworking extends App {
+  new Test().doIT
+}
+
+class Test {
+  val rddList = Spark.ctx.parallelize(List(1,2,3))
+
+  def doIT() =  {
+    val after = rddList.map(someFunc)
+    after.collect().foreach(println)
+  }
+
+  val someFunc = (a: Int) => a + 1
+}
+```
+
+6. 
+
