@@ -153,5 +153,16 @@ class Test {
 }
 ```
 
-6. 
+6. <font color="cyan">Streaming with Spark</font> <br>
 
+    1. **Spark Streaming** <br>
+        - works on top of DStream API (internally used RDDs. 
+        - data comes in microbatches based on the trigger interval.
+
+    2. **Structured Streaming** (Spark2.x ONWARDS) <br>
+        - no batches, data appended to continuous flowing stream.
+        - built on top of DataFrames/Dataset API so sql queries/scala function to process data can be applied on top.
+        -  each row processed and appended to unounded result table based on usecase (update/append etc.)
+
+
+7. 
