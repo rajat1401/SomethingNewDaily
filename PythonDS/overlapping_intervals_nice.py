@@ -17,4 +17,3 @@ class Intervals:
                 end= intervals[low][1]
             low+= 1
         return count
-            
