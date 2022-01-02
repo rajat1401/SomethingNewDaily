@@ -59,7 +59,45 @@ lists the images
     kill to stop. <br>
     rm to remove.
 
-9. 
+9. <font color="cyan">Shell and Exec forms</font> <br>
+
+    - Shell Form <br>
+    ```<instruction> <command>```    
+    e.g. RUN apt-get install python3, CMD echo "Hello World" etc. 
+    e.g. 
+        ```
+            ENV name John Dow
+            ENTRYPOINT echo "Hello ${name}"
+        ```
+        would return <font color="orange">Hello John Doe.</font> upon a docker container run. 
+    
+    - Exec Form <br>
+    ```<instruction> ["executable", "param1", "param2"]``` <br>
+    e.g RUN ["apt-get", "install", "python3"], CMD ["/bin/bash", "echo Hello world"] <br>
+    e.g 
+        ```
+            ENV name John Dow
+            ENTRYPOINT ["/bin/bash", "-c", "echo Hello, $name"]
+        ```
+        would return same output as above upon docker container run. 
+
+
+10. > **RUN** <br>
+
+    Allows to install application and packages reqd for it. Executes any commands on top of current image and creates a sorta layering. by commiting results. Often find multiple of these in a dockerfile. 
+
+11. > **CMD** <br>
+
+    Allows to set a dafault commands which is executed only when container is <font color="orange">run without specifying a command.</font> If Dockerfile has more than one CMD, all but the last are ignored. 
+
+12. > **ENTRYPOINT** <br>
+
+    This is not ignored even when the Docker container runs with command line arguments. 
+    ```
+        ENTRYPOINT ["/bin/bash", "echo Hello"]
+        CMD ["world]
+    ```
+    when run with ```docker container run -it <image>``` would return **Hello world** but when run with ```docker container run -it <image> John``` would return **Hello John**. 
 
 
     
