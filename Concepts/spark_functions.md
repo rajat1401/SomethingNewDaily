@@ -33,13 +33,11 @@ val collect_list_df = array_dataframe.groupBy("name").agg(collect_list("toolSet"
 
     groupBy created a RotationalDataset rathet than a df. use agg with it for count/sum/max along with ```alias``` to create new aggregations and result is a df. 
 
-    > <font color="cyan">alias</font> also helpful in joining dataframes. 
-    
-    <img src="<image here for join"> <br>
 
 
-5. ```Window``` and ```rank/row_number/dense_rank```
+5. ```MSCK Repair``` <br>
+    used to manually add partitions that are added or removed from filesystem into the Hive metastore. E.g. you create a partitioned external table and delete one of the partitions' subdirectory. A `show partitions` would still return that partition. 
+    > MSCK REPAIR employee_table DROP PARTITIONS;
 
-    Learn this syntax.
 
-    <img src="image here"> 
+6. 

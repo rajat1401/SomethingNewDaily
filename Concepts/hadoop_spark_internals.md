@@ -64,7 +64,7 @@ default parellelism is:
 - can set ```spark.sql.shuffle.partitions``` based on data size, cores etc. can be se to 1.5 or 2X the initial value of partitions (df.rdd.getnumpartitions). Once any operation is applied to the df, partitions become 200 (default). 
 
 <br>
-<img src="/Users/rajat_mac/Documents/SomethingNewDaily/images/repartition.png">
+<img src="/Users/rajat_mac/Documents/SomethingNewDaily/images/repartition.png"> 
 
 
 4. <font color="cyan">Spark sorting</font> <br>
