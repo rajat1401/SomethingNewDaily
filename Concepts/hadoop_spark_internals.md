@@ -165,4 +165,9 @@ class Test {
         -  each row processed and appended to unounded result table based on usecase (update/append etc.)
 
 
-7. 
+7. <font color="cyan">Passing customer jars to EMR cluster</font> <br>
+
+    1. Adding --jars option in spark-submit sends JARs to all nodes in thec cluster and makes them available in classpath of all executors on a given node. 
+
+    2. Place JARs in S3. EMR allows to configure a bootstrap action that can be a script when is run during creation of EMR cluster. The script will also have the code for adding the JARs to classpath. 
+
