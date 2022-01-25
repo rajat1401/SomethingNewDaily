@@ -15,5 +15,22 @@
     <br>
     
 
-2. 
+2. <font color="orange">Data Migration Delta to Athena/Presto</font> (for analysis) <br>
+    Generate symlink manifest file for the delta table which tells which files to read in the data when running a query instead of doing a complete data listing. <br>
+    > GENERATE symlink_format_manifest FOR TABLE DELTA.<path_to_table> <br>
+    
+    Can also define property `delta.compatibility.symlinkFormatManifest.enabled=true` for auto-updation of manifest file upon CDC. 
+
+    Define an external table in Presto/Athena as follows:- <br>
+    ```sql
+        CREATE EXTERNAL TABLE mytable (name string) PARTITIONED BY (date_part date) ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' STORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.SymlinkTextInputFormat'OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'LOCATION '<path-to-delta-table>/_symlink_format_manifest/'
+    ```
+    [Link](https://docs.databricks.com/delta/presto-integration.html)
+    
+    <br>
+
+
+3. 
+
+
 
