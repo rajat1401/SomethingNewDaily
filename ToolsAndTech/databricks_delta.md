@@ -30,7 +30,22 @@
     <br>
 
 
-3. 
+3. <font color="orange">Optimize</font> <br>
+    Optimize entire table, subset of data (using `where`) or colocate data by a column (using `zorder`). If no colocation specified, bin packing optimization is performed. <br>
+    1. Bin packing opt. is idempotent. produces evenly balanced data files. 
+    2. Z-ordering not idempotent but if no new data added to a partition, another z-ordering will have no effect. 
+
+    ```sql
+    OPTIMIZE events WHERE date >= '2017-01-01'
+
+    OPTIMIZE events WHERE date >= current_timestamp() - INTERVAL 1 day ZORDER BY (eventType)
+    ```
+    [Link](https://docs.databricks.com/spark/latest/spark-sql/language-manual/delta-optimize.html)
+
+    <br>
+
+
+4. 
 
 
 
