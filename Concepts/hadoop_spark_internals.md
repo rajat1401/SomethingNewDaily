@@ -171,3 +171,20 @@ class Test {
 
     2. Place JARs in S3. EMR allows to configure a bootstrap action that can be a script when is run during creation of EMR cluster. The script will also have the code for adding the JARs to classpath. 
 
+
+8. <font color="cyan">Spark Optimizations</font> <br>
+
+    1. **Skew** <br>
+    Enable `AQE` or skew join optimization or perform key salting. 
+    Can also perform joins/computes separately for the skewed partition and later take a union. 
+
+    2. **Spill** <br>
+    When spark mvoes data from memory to disk to avoid OOM error when partition is too large to fit into memory. Try reducing `filesMaxPartitionBytes` (default=128MB), increase memory of workers, increase the number of partitions by tuning `spark.sql.shuffle.partitions` or eplicitly repartitioning. 
+
+    3. **Shuffle**  <br>
+    Use fewer and larger workers so there is less shuffling, broadcast the smaller table if possible(default=10MB threshold) but can be tuned. Dont crank too high else driver fail due to OOM. 
+
+    4. **Tine Files** <br>
+    Compacting the existing small files to larger tables or auto-compaction, changing spark.sql.shuffle.partitions to lower number or repartitioning. If AQE is enabled, set `spark.sql.adaptive.coalescePartitions.enabled` to true.
+ 
+    

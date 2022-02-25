@@ -32,8 +32,9 @@
 
 3. <font color="orange">Optimize</font> <br>
     Optimize entire table, subset of data (using `where`) or colocate data by a column (using `zorder`). If no colocation specified, bin packing optimization is performed. <br>
-    1. Bin packing opt. is idempotent. produces evenly balanced data files. 
-    2. Z-ordering not idempotent but if no new data added to a partition, another z-ordering will have no effect. 
+    1. Bin packing opt. is idempotent. produces evenly balanced data files. Helps optimize read performance.
+    2. Z-ordering not idempotent but if no new data added to a partition, another z-ordering will have no effect. Helps optimzie data-skipping. 
+    > Z-order primary fields or fields involved in joins or fields with high cardinallity that are commonly used in filter predicates. 
 
     ```sql
     OPTIMIZE events WHERE date >= '2017-01-01'
@@ -45,7 +46,16 @@
     <br>
 
 
-4. 
+4. <font color="orange">Auto-Optimize</font> <br>
+
+    1. Optimized writes: Does an adaptive shuffling before writing files to output. Works for all types of writes. 
+
+        ```sql
+        ALTER TABLE [<table_name> | Delta.<table_path>] SET TBLPROPERTIES 'delta.autoOptimize.optimizewrite'= 'true'
+        ```
+        (advisable to set this to true at cluster level itself)
+
+    2. 
 
 
 
